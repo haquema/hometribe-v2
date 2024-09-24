@@ -20,16 +20,16 @@ const QuestionCard = ({onClose}) => {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center mt-5 mb-10 gap-6">
+    <div className="flex flex-col justify-center items-center mt-5 mb-10 gap-10 w-4/5">
       {!resultPage && 
-        <Progress value={progressValue} color="primary" showValueLabel={true} className="w-4/5" classNames={{
-          labelWrapper: 'self-center'
+        <Progress value={progressValue} color="primary" label={`${pageNo}/${questionCount}`} className="w-full" classNames={{
+          labelWrapper: 'self-center',
+          label: 'font-semibold'
         }} />
       }
       {!(quizCompleted || resultPage) &&
-        <div className="flex flex-col justify-center items-start gap-2 px-4">
-          <p className="font-semibold text-lg text-red-600">Question {pageNo + 1}</p>
-          <p className=" w-full h-28">{questions[pageNo]}</p>
+        <div className="flex flex-col justify-center items-start gap-6">
+          <p className=" w-full h-fit">{questions[pageNo]}</p>
           <div className="flex gap-6 w-full justify-center">
             <Button 
               radius='sm' 
@@ -52,7 +52,7 @@ const QuestionCard = ({onClose}) => {
         </div>
       }
       {quizCompleted && 
-        <div className="flex flex-col px-4 gap-6">
+        <div className="flex flex-col px-4 gap-10">
           <p>Thanks for completing the quiz. To see your results, press the button below</p>
           <Button onPress={() => setPageNo(pageNo + 1)}>Results</Button>
         </div>

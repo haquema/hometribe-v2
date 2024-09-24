@@ -9,12 +9,15 @@ export default function QuizModal({isOpen, onOpenChange}) {
       placement='center'
       backdrop="blur"
       onOpenChange={onOpenChange} 
-      size="md"
+      size="lg"
+      classNames={{
+        body: 'bg-stone-50 flex flex-col items-center'
+      }}
     >
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalBody className="bg-stone-50 flex flex-col items-center">
+            <ModalBody>
               <QuestionCard onClose={onClose}/>
             </ModalBody>
           </>
