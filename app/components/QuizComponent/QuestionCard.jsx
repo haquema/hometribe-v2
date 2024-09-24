@@ -1,14 +1,14 @@
 import { useState } from "react";
-import ProgressBar from 'react-bootstrap/ProgressBar';
 import ResultCard from "./ResultCard";
-import { Button } from "@nextui-org/react";
+import { Button, Progress } from "@nextui-org/react";
 
 const QuestionCard = ({onClose}) => {
   const [pageNo, setPageNo] = useState(0);
   const questionCount = questions.length;
   let progressValue = (pageNo/questionCount) * 100;
   const [score, setScore] = useState(0)
-  const bool = pageNo >= questions.length
+  const quizCompleted = (pageNo == questions.length)
+  const resultPage = (pageNo > questions.length)
 
   const resetForm = () => {
     setPageNo(0);
@@ -16,13 +16,17 @@ const QuestionCard = ({onClose}) => {
   }
 
   const ButtonHandler = () => {
-    bool ? resetForm() : setPageNo(pageNo + 1);
+    (quizCompleted || resultPage) ? resetForm() : setPageNo(pageNo + 1);
   }
 
   return (
-    <div className="flex flex-col justify-center items-center mt-5 mb-10 gap-2">
-      <ProgressBar now={progressValue} />
-      {!bool &&
+    <div className="flex flex-col justify-center items-center mt-5 mb-10 gap-6">
+      {!resultPage && 
+        <Progress value={progressValue} color="primary" showValueLabel={true} className="w-4/5" classNames={{
+          labelWrapper: 'self-center'
+        }} />
+      }
+      {!(quizCompleted || resultPage) &&
         <div className="flex flex-col justify-center items-start gap-2 px-4">
           <p className="font-semibold text-lg text-red-600">Question {pageNo + 1}</p>
           <p className=" w-full h-28">{questions[pageNo]}</p>
@@ -47,7 +51,13 @@ const QuestionCard = ({onClose}) => {
           </div>
         </div>
       }
-      {bool && 
+      {quizCompleted && 
+        <div className="flex flex-col px-4 gap-6">
+          <p>Thanks for completing the quiz. To see your results, press the button below</p>
+          <Button onPress={() => setPageNo(pageNo + 1)}>Results</Button>
+        </div>
+      }
+      {resultPage &&
         ResultCard(score)
       }
     </div>
