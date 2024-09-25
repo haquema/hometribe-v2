@@ -11,11 +11,10 @@ export default function ResultCard(score) {
   }
   
   return (
-    <div className="flex flex-col justify-center items-start gap-2 px-6">
+    <div className="flex flex-col justify-center items-center w-full gap-6 my-4 px-2">
       <p className="font-semibold text-xl self-center">{result.title}</p>
       <p className="my-1">{result.description}</p>
-      <p className="text-sm mt-3">Subscribe to our mailing list to receive a copy of your results and keep up to date with our journey!</p>
-      <SubscriptionComponent />
+      <SubscriptionComponent showDescription={true} description={'Subscribe to our mailing list to receive a copy of your results and keep up to date with our journey!'} />
     </div>
   )
 }

@@ -9,9 +9,10 @@ export default function QuizModal({isOpen, onOpenChange}) {
       placement='center'
       backdrop="blur"
       onOpenChange={onOpenChange} 
-      size="lg"
+      size="sm"
       classNames={{
-        body: 'bg-stone-50 flex flex-col items-center'
+        body: 'bg-stone-50 flex flex-col justify-center items-center',
+        base: 'h-96'
       }}
     >
       <ModalContent>
