@@ -6,13 +6,18 @@ const QuestionCard = ({onClose}) => {
   const [pageNo, setPageNo] = useState(0);
   const questionCount = questions.length;
   let progressValue = (pageNo/questionCount) * 100;
-  const [score, setScore] = useState(0)
+  const [answers, setAnswers] = useState([])
   const quizCompleted = (pageNo == questions.length)
   const resultPage = (pageNo > questions.length)
 
   const resetForm = () => {
     setPageNo(0);
     onClose()
+  }
+
+  const backButton = () => {
+    setPageNo(pageNo - 1);
+    
   }
 
   const ButtonHandler = () => {
@@ -37,6 +42,8 @@ const QuestionCard = ({onClose}) => {
               className="bg-red-500 w-1/2" 
               onPress={() => {
                 ButtonHandler()
+                setAnswers([...answers, 0])
+                console.log(answers)
               }}
             >Disagree</Button>
             <Button 
@@ -45,7 +52,8 @@ const QuestionCard = ({onClose}) => {
               className="bg-blue-500 w-1/2" 
               onPress={() => {
                 ButtonHandler()
-                setScore(score + 1)
+                setAnswers([...answers, 1])
+                console.log(answers)
               }}
             >Agree</Button>
           </div>
@@ -58,7 +66,7 @@ const QuestionCard = ({onClose}) => {
         </div>
       }
       {resultPage &&
-        ResultCard(score)
+        ResultCard(answers)
       }
     </div>
   )

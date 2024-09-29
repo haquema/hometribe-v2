@@ -1,7 +1,17 @@
 import { SubscriptionComponent } from "@/app/page";
 
-export default function ResultCard(score) {
+export default function ResultCard(answers) {
+  let tallyScore = (scores) => {
+    let sum = 0;
+    for (let i = 0; i < scores.length; i++ ) {
+      sum += scores[i];
+    }
+    return sum;
+  }
+
+  let score = tallyScore(answers);
   let result;
+
   if (score >= 4) {
     result = titles[1];
   } else if (score >= 2) {

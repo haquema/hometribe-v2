@@ -5,7 +5,7 @@ import Logo from '../../public/logo.png';
 
 export default function NavbarComponent() {
   return (
-    <div className="w-[420px] flex items-center p-4">
+    <div className="flex p-4 w-full max-w-[600px] self-center">
       <Link href="/">
         <Image src={Logo} alt="hometribe logo" width={130} />
       </Link>

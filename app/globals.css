@@ -14,12 +14,23 @@
   }
 } */
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  html, body {
+    @apply h-full w-full;
+    @apply bg-red-50
+  }
 }
-
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+  .highlight-red {
+    @apply bg-red-500 text-white font-semibold px-0.5
+  }
+  .highlight-amber {
+    @apply bg-amber-500 text-white font-semibold px-0.5
+  }
+  .highlight-green {
+    @apply bg-green-500 text-white font-semibold px-0.5
   }
 }
