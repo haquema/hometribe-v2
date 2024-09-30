@@ -1,4 +1,4 @@
-import { SubscriptionComponent } from "@/app/page";
+import SubscriptionForm from "../SubscriptionForm";
 
 export default function ResultCard(answers) {
   let tallyScore = (scores) => {
@@ -24,7 +24,7 @@ export default function ResultCard(answers) {
     <div className="flex flex-col justify-center items-center w-full gap-6 my-4 px-2">
       <p className="font-semibold text-xl self-center">{result.title}</p>
       <p className="my-1">{result.description}</p>
-      <SubscriptionComponent showDescription={true} description={'Subscribe to our mailing list to receive a copy of your results and keep up to date with our journey!'} />
+      <SubscriptionForm showDescription={true} description={'Subscribe to our mailing list to receive a copy of your results and keep up to date with our journey!'} />
     </div>
   )
 }
