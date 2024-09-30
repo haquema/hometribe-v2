@@ -4,9 +4,10 @@ import { Input, Button } from "@nextui-org/react";
 import { EnvelopeIcon } from '@heroicons/react/24/solid'
 import { createClient } from "@/utils/supabase/client";
 import { useState } from "react";
+import { emailSchema } from "../validations/emailSchema";
 
 export default function SubscriptionForm({showDescription, description}) {
-  const [value, setValue] = useState('')
+  const [email, setEmail] = useState()
 
   // this will determine whether a default or custom description is used
   let inputDescription;
@@ -17,10 +18,47 @@ export default function SubscriptionForm({showDescription, description}) {
   }
 
   async function subscriptionSignup() {
-    // const supabase = await createClient();
-    // const { data, error } = await supabase.from('subscriptions').select().eq('email', )
-    
-    toast('Subscription successful')
+    const supabase = await createClient();
+    try {
+      await emailSchema.validate({ email });
+      const { data: emailExists, error: fetchError } = await supabase
+        .from('subscriptions')
+        .select()
+        .eq('email', email)
+        .single();
+      
+      if (emailExists != null && fetchError) {
+        console.error('Error checking for email:', fetchError);
+        toast.error('Internal Error 1, try again please')
+      } else if (emailExists) {
+        const { error: updateError } = await supabase
+          .from('subscriptions')
+          .update({subscribed: true})
+          .eq('email', email);
+
+        if (updateError) {
+          console.error('Error updating the record:', updateError);
+          toast.error('Internal Error 2, try again please')
+        } else {
+          toast.success('Subscription successful')
+        }
+
+      } else if (emailExists == null) {
+        const { data: newSubscriber, error: createError } = await supabase
+          .from('subscriptions')
+          .insert([{ email: email, subscribed: true}]);
+
+        if (createError) {
+          console.error('Error updating the record:', createError);
+          toast.error('Internal Error 3, try again please')
+        } else {
+          toast.success('Subscription successful')
+        }
+      }
+    } catch (err) {
+      // console.error('validation error', err.message);
+      toast.error(err.message)
+    }
   }
   
 
@@ -28,14 +66,15 @@ export default function SubscriptionForm({showDescription, description}) {
     <Input 
       type="email"
       label="Email"
+      isRequired
       placeholder="youremail@something.com"
       description={inputDescription}
       classNames={{
         description: "text-black",
         inputWrapper: "border border-amber-600 bg-white",
       }}
-      value={value}
-      onValueChange={setValue}
+      value={email}
+      onValueChange={setEmail}
       endContent={
         <Button radius="lg" isIconOnly color="primary" 
           className=" bg-amber-800 h-full" onPress={subscriptionSignup}
