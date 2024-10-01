@@ -25,7 +25,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased px-4`}>
         <Providers>
           <div className="flex flex-col justify-center min-w-[350px]">
             <Toaster richColors position="top-center"/>

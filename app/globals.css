@@ -16,7 +16,7 @@
 
 @layer base {
   html, body {
-    @apply h-full w-full;
+    @apply h-fit w-full;
     @apply bg-red-50
   }
 }
@@ -25,12 +25,15 @@
     text-wrap: balance;
   }
   .highlight-red {
-    @apply bg-red-600 text-white font-semibold px-0.5
+    @apply bg-red-600 text-white text-2xl font-semibold px-1 pb-0.5 rounded-sm
   }
   .highlight-amber {
     @apply bg-amber-500 text-white font-semibold px-0.5
   }
   .highlight-green {
     @apply bg-green-500 text-white font-semibold px-0.5
+  }
+  .gradiant-red-amber {
+    @apply bg-gradient-to-r from-red-600 via-amber-600 to-orange-700 inline-block text-transparent bg-clip-text
   }
 }
