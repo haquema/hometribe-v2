@@ -66,18 +66,17 @@ export default function SubscriptionForm({showDescription, description}) {
     <Input 
       type="email"
       label="Email"
-      isRequired
       placeholder="youremail@something.com"
       description={inputDescription}
       classNames={{
         description: "text-black",
-        inputWrapper: "border border-amber-600 bg-white",
+        inputWrapper: "border border-red-600 bg-white",
       }}
       value={email}
       onValueChange={setEmail}
       endContent={
         <Button radius="lg" isIconOnly color="primary" 
-          className=" bg-amber-800 h-full" onPress={subscriptionSignup}
+          className=" bg-red-600 h-full" onPress={subscriptionSignup}
         >
           <EnvelopeIcon className="size-5 text-white"/>
         </Button>
