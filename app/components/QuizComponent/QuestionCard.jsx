@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ResultCard from "./ResultCard";
 import { Button, Progress } from "@nextui-org/react";
+import { ChevronLeftIcon } from "@heroicons/react/24/solid";
 
 const QuestionCard = ({onClose}) => {
   const [pageNo, setPageNo] = useState(0);
@@ -17,7 +18,8 @@ const QuestionCard = ({onClose}) => {
 
   const backButton = () => {
     setPageNo(pageNo - 1);
-    
+    setAnswers(answers.slice(0, -1))
+    console.log(answers)
   }
 
   const ButtonHandler = () => {
@@ -25,7 +27,7 @@ const QuestionCard = ({onClose}) => {
   }
 
   return (
-    <div className="flex flex-col justify-between items-center w-full gap-6 my-4 px-2 h-full">
+    <div className="flex flex-col justify-between items-center w-full gap-6 my-4 px-5 h-full">
       {!resultPage && 
         <Progress value={progressValue} color="primary" label={`${pageNo}/${questionCount}`} className=" mt-6 w-full" classNames={{
           labelWrapper: 'self-center',
@@ -34,6 +36,9 @@ const QuestionCard = ({onClose}) => {
       }
       {!(quizCompleted || resultPage) &&
         <div className="flex flex-col justify-between items-start h-60">
+          {(!(quizCompleted || resultPage) && pageNo != 0) && <button className="absolute inset-y-32 left-2 hover:scale-125" onClick={backButton}>
+            <ChevronLeftIcon className="size-6" />
+          </button>}
           <p className=" w-full h-fit mt-4">{questions[pageNo]}</p>
           <div className="flex gap-6 w-full justify-center mb-6">
             <Button 
