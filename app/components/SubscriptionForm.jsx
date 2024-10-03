@@ -70,7 +70,7 @@ export default function SubscriptionForm({showDescription, description}) {
       description={inputDescription}
       classNames={{
         description: "text-black",
-        inputWrapper: "border border-red-600 bg-white",
+        inputWrapper: "border border-red-200 bg-white",
       }}
       value={email}
       onValueChange={setEmail}

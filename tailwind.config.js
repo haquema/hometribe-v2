@@ -10,6 +10,15 @@ module.exports = {
   ],
   theme: {
     extend: {
+      keyframes: {
+        flash: {
+          '0%, 100%': { backgroundColor: 'red' },
+          '50%': { backgroundColor: 'transparent' },
+        },
+      },
+      animation: {
+        flash: 'flash 0.5s ease-in-out 3', // Define animation duration and iteration
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
