@@ -22,7 +22,7 @@ export default function Page() {
       <Gallery />
       <div id="mailing-list" className="flex flex-col gap-3 items-center">
         <p className="">We&apos;re not ready just yet, but <span className="font-semibold">let&apos;s stay in touch.</span></p>
-        <div className="w-4/5">
+        <div className="w-full">
           <SubscriptionForm showDescription={false} description={'We\'ll only ever use your email for updates'}/>
         </div>
       </div>
@@ -30,7 +30,7 @@ export default function Page() {
         <QuizCard />
         <div className="gap-4 flex flex-col ">
           <WrenchScrewdriverIcon className="size-24 stroke-1 self-center" />
-          <p className="w-3/4 text-center text-lg self-center">We&apos;re building a platform where homeschoolers can connect with like-minded families, find trusted resources, connect with reputable vendors, and plan their homeschooling journey with the help of AI-driven tools.</p>
+          <p className="w-3/4 text-center self-center">We&apos;re building a platform where homeschoolers can connect with like-minded families, find trusted resources, connect with reputable vendors, and plan their homeschooling journey with the help of AI-driven tools.</p>
         </div>
       </div>
     </div>
