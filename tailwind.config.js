@@ -12,7 +12,7 @@ module.exports = {
     extend: {
       keyframes: {
         flash: {
-          '0%, 100%': { backgroundColor: 'red' },
+          '0%, 100%': { backgroundColor: 'yellow' },
           '50%': { backgroundColor: 'transparent' },
         },
       },
