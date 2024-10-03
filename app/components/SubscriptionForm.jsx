@@ -63,7 +63,7 @@ export default function SubscriptionForm({showDescription, description}) {
   
 
   return (
-    <Input 
+    <Input
       type="email"
       label="Email"
       placeholder="youremail@something.com"
@@ -75,7 +75,7 @@ export default function SubscriptionForm({showDescription, description}) {
       value={email}
       onValueChange={setEmail}
       endContent={
-        <Button isIconOnly color="primary" 
+        <Button id="subscribe-button" isIconOnly color="primary" 
           className="rounded-md bg-red-600 h-full" onPress={subscriptionSignup}
         >
           <EnvelopeIcon className="size-5 text-white"/>

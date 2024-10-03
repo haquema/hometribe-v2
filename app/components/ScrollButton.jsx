@@ -4,18 +4,19 @@ import { Button } from "@nextui-org/react"
 
 export default function ScrollButton() {
   const scrollToSection = () => {
-    const targetSection = document.getElementById('mailing-list');
-    if (targetSection) {
+    const targetSection1 = document.getElementById('mailing-list');
+    const targetSection2 = document.getElementById('subscribe-button');
+    if (targetSection1) {
       // Scroll to the section
-      targetSection.scrollIntoView({ behavior: 'smooth' });
+      targetSection1.scrollIntoView({ behavior: 'smooth' });
 
       // Add the Tailwind 'flash' class to the section
-      // targetSection.classList.add('animate-flash');
+      targetSection2.classList.add('animate-wiggle');
 
       // // Remove the 'flash' class after 1.5 seconds (adjust timing based on animation)
-      // setTimeout(() => {
-      //   targetSection.classList.remove('animate-flash');
-      // }, 1500); // 1.5s duration (match the animation duration)
+      setTimeout(() => {
+        targetSection2.classList.remove('animate-wiggle');
+      }, 1500); // 1.5s duration (match the animation duration)
     }
   }
 

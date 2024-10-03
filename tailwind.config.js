@@ -11,13 +11,13 @@ module.exports = {
   theme: {
     extend: {
       keyframes: {
-        flash: {
-          '0%, 100%': { backgroundColor: 'yellow' },
-          '50%': { backgroundColor: 'transparent' },
-        },
+        wiggle: {
+          '0%, 100%': { transform: 'rotate(-10deg)' },
+          '50%': { transform: 'rotate(3deg)' },
+        }
       },
       animation: {
-        flash: 'flash 0.5s ease-in-out 3', // Define animation duration and iteration
+        wiggle: 'wiggle 0.1s ease-in-out infinite',
       },
       colors: {
         background: "var(--background)",

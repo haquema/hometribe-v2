@@ -25,7 +25,7 @@
     text-wrap: balance;
   }
   .highlight-red {
-    @apply bg-red-600 text-white text-2xl font-semibold px-1 pb-0.5 rounded-sm
+    @apply bg-red-600 text-white text-xl font-semibold px-1 pb-0.5 rounded-sm
   }
   .highlight-amber {
     @apply bg-amber-500 text-white font-semibold px-0.5
