@@ -14,10 +14,15 @@ module.exports = {
         wiggle: {
           '0%, 100%': { transform: 'rotate(-10deg)' },
           '50%': { transform: 'rotate(3deg)' },
-        }
+        },
+        slideIn: {
+          '0%': { transform: 'translateX(100%)', opacity: 0 },
+          '100%': { transform: 'translateX(0)', opacity: 1 },
+        },
       },
       animation: {
         wiggle: 'wiggle 0.1s ease-in-out infinite',
+        slideIn: 'slideIn 0.7s ease-out forwards',
       },
       colors: {
         background: "var(--background)",
@@ -27,6 +32,7 @@ module.exports = {
   },
   darkMode: "class",
   plugins: [
-    nextui()
+    nextui(),
+    require('daisyui'),
   ]
 };

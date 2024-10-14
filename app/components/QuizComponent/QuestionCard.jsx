@@ -27,7 +27,7 @@ const QuestionCard = ({onClose}) => {
   }
 
   return (
-    <div className="flex flex-col justify-between items-center w-full gap-6 my-4 px-5 h-full">
+    <div className="flex flex-col justify-between items-center w-full gap-6 my-4 px-5 h-full text-black">
       {!resultPage && 
         <Progress value={progressValue} color="primary" label={`${pageNo}/${questionCount}`} className=" mt-6 w-full" classNames={{
           labelWrapper: 'self-center',
