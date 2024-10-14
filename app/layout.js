@@ -1,6 +1,7 @@
 import localFont from "next/font/local";
 import "./globals.css";
-import { Providers } from "./providers";
+import { UIProvider } from "./providers/NextUIProvider";
+import { CSPostHogProvider } from "./providers/PostHogProvider";
 import NavbarComponent from "./components/Navbar";
 import {Toaster} from 'sonner'
 
@@ -25,15 +26,17 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased px-2`}>
-        <Providers>
-          <div className="flex flex-col justify-center min-w-[350px]">
-            <Toaster richColors position="top-center"/>
-            <NavbarComponent />
-            {children}
-          </div>
-        </Providers>
-      </body>
+      <CSPostHogProvider>
+        <body className={`${geistSans.variable} ${geistMono.variable} antialiased px-2`}>
+          <UIProvider>
+              <div className="flex flex-col justify-center min-w-[350px]">
+                <Toaster richColors position="top-center"/>
+                <NavbarComponent />
+                {children}
+              </div>
+          </UIProvider>
+        </body>
+      </CSPostHogProvider>
     </html>
   );
 }
