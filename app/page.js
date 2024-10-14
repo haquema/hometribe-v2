@@ -3,7 +3,6 @@ import QuizBubble from "./components/QuizComponent/QuizBubble";
 import { Divider, Accordion, AccordionItem, Button } from "@nextui-org/react";
 import Gallery from "./components/Gallery";
 import { WrenchScrewdriverIcon, ArrowDownIcon } from "@heroicons/react/24/outline";
-import ScrollButton from "./components/ScrollButton";
 import QuizCard from "./components/QuizComponent/QuizCard";
 
 
