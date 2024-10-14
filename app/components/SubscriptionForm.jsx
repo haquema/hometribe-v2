@@ -7,7 +7,7 @@ import { useState } from "react";
 import { emailSchema } from "../validations/emailSchema";
 
 export default function SubscriptionForm({showDescription, description}) {
-  const [email, setEmail] = useState()
+  const [email, setEmail] = useState('')
 
   // this will determine whether a default or custom description is used
   let inputDescription;
@@ -18,7 +18,7 @@ export default function SubscriptionForm({showDescription, description}) {
   }
 
   async function subscriptionSignup() {
-    const supabase = await createClient();
+    const supabase = createClient();
     try {
       await emailSchema.validate({ email });
       const { data: emailExists, error: fetchError } = await supabase
@@ -26,41 +26,48 @@ export default function SubscriptionForm({showDescription, description}) {
         .select()
         .eq('email', email)
         .single();
-      
-      if (emailExists != null && fetchError) {
-        console.error('Error checking for email:', fetchError);
-        toast.error('Internal Error 1, try again please')
+
+        // console.log(emailExists);
+      if (fetchError) {
+        console.error('Error 1 - checking for email:', fetchError);
+        toast.error('Something went wrong, please try again')
       } else if (emailExists) {
-        const { error: updateError } = await supabase
-          .from('subscriptions')
-          .update({subscribed: true})
-          .eq('email', email);
+        switch (emailExists.subscribed) {
+          case true:
+            toast.success('You\'re already on our waitlist!')
+            break;
+          case false:
+            const { error: updateError } = await supabase
+              .from('subscriptions')
+              .update({subscribed: true})
+              .eq('email', email);
 
-        if (updateError) {
-          console.error('Error updating the record:', updateError);
-          toast.error('Internal Error 2, try again please')
-        } else {
-          toast.success('Subscription successful')
+            if (updateError) {
+              console.error('Error 2 - updating the record:', updateError);
+              toast.error('Something went wrong, please try again')
+            } else {
+              toast.success('You\'re on our waitlist!')
+            }
         }
-
       } else if (emailExists == null) {
         const { data: newSubscriber, error: createError } = await supabase
           .from('subscriptions')
           .insert([{ email: email, subscribed: true}]);
 
         if (createError) {
-          console.error('Error updating the record:', createError);
-          toast.error('Internal Error 3, try again please')
+          console.error('Error 3 - updating the record:', createError);
+          toast.error('Something went wrong, please try again')
         } else {
-          toast.success('Subscription successful')
+          // console.log(newSubscriber)
+          toast.success('You\'ve been added to our waitlist!')
         }
       }
     } catch (err) {
-      // console.error('validation error', err.message);
+      console.error('validation error', err.message);
       toast.error(err.message)
     }
   }
-  
+
 
   return (
     <Input
