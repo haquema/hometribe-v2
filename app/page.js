@@ -16,18 +16,17 @@ export default function Page() {
         <Divider className="py-1 bg-black w-1/4"/>
         <p className="w-full font-semibold text-lg">At hometribe, our mission is <span className="highlight-red">simple</span>: to make <span className="highlight-red">homeschooling</span> easier, personalised, and more <span className="highlight-red">connected</span>.</p>
         <div id="mailing-list" className="flex flex-col gap-2 items-center">
-          <p className="text-base pl-1">We&apos;re not ready just yet, but if you&apos;re interested in our journey <span className="font-semibold">let&apos;s stay in touch.</span></p>
+          <p className="text-base pl-1">If you&apos;re interested in staying updated on our journey, <span className="font-semibold">let&apos;s stay in touch.</span></p>
           <SubscriptionForm showDescription={false} description={'We\'ll only ever use your email for updates'}/>
         </div>
       </div>
-      {/* <ScrollButton /> */}
       <Gallery />
+      <QuizCard />
       <div className="gap-4 flex flex-col ">
         <WrenchScrewdriverIcon className="size-24 stroke-1 self-center" />
         <p className="w-3/4 text-center self-center">We&apos;re building a platform where homeschoolers can connect with like-minded families, find trusted resources, connect with reputable vendors, and plan their homeschooling journey with the help of AI-driven tools.</p>
       </div>
       <QuizBubble />
-      <QuizCard />
     </div>
   )
 }
