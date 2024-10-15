@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-export const emailSchema = yup.object().shape({
+export const subscriptionFormSchema = yup.object().shape({
   email: yup.string()
     .trim()
     .lowercase()

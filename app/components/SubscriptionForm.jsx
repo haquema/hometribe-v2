@@ -4,7 +4,7 @@ import { Input, Button } from "@nextui-org/react";
 import { EnvelopeIcon } from '@heroicons/react/24/solid'
 import { createClient } from "@/utils/supabase/client";
 import { useState } from "react";
-import { emailSchema } from "../validations/emailSchema";
+import { subscriptionFormSchema } from "../validations/emailSchema";
 
 export default function SubscriptionForm({showDescription, description}) {
   const [email, setEmail] = useState('')
@@ -20,7 +20,7 @@ export default function SubscriptionForm({showDescription, description}) {
   async function subscriptionSignup() {
     const supabase = createClient();
     try {
-      await emailSchema.validate({ email });
+      await subscriptionFormSchema.validate({ email });
       const { data: emailExists, error: fetchError } = await supabase
         .from('subscriptions')
         .select()
