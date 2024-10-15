@@ -4,7 +4,7 @@ import { Input, Button } from "@nextui-org/react";
 import { EnvelopeIcon } from '@heroicons/react/24/solid'
 import { createClient } from "@/utils/supabase/client";
 import { useState } from "react";
-import { subscriptionFormSchema } from "../validations/emailSchema";
+import { subscriptionFormSchema } from "../validations/subscriptionFormSchema";
 
 export default function SubscriptionForm({showDescription, description}) {
   const [email, setEmail] = useState('')

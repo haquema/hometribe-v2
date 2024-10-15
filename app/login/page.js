@@ -1,11 +1,10 @@
-import { Button, Input } from '@nextui-org/react'
-import { login, signup } from './actions'
+import { Input } from '@nextui-org/react'
+import { SubmitButton } from './components/Buttons'
 
 export default function LoginPage() {
   
-
   return (
-    <form className='py-2 flex flex-col gap-2 w-96 self-center'>
+    <form id='auth-form' className='py-2 flex flex-col gap-2 w-96 self-center' >
       <Input type='email' name='email' label='Email' classNames={{
         inputWrapper: 'bg-white border border-blue-200',
         base: '',
@@ -15,8 +14,8 @@ export default function LoginPage() {
         base: '',
       }}/>
       <div className='flex gap-4'>
-        <Button color='primary' variant='bordered' className='rounded-md w-1/2'>Signup</Button>
-        <Button color='primary' className='rounded-md w-1/2'>Login</Button>
+        <SubmitButton label='Signup' action='signup' variant='bordered' />
+        <SubmitButton label='Login' action='login' />
       </div>
     </form>
   )
