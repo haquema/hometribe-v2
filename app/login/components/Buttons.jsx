@@ -2,22 +2,45 @@
 import { Button } from "@nextui-org/react";
 import { signup, login } from "../actions";
 import { useRef } from "react";
+import { customValidate } from "@/app/validations/authSchema";
+import { toast } from "sonner";
 
 export const SubmitButton = ({label, action, variant}) => {
   const hiddenButtonRef = useRef(null);
 
-  function handler(event) {
+  async function handler(event) {
     event.preventDefault();
+    // locate the form element, create FormData object
     const formElement = document.getElementById('auth-form');
     let formData = new FormData(formElement);
+    
+    //validate inputs and call the appropriate server side handler function
+    let errors = await customValidate({
+      email: formData.get('email'),
+      password: formData.get('password')
+    });
 
-    switch (action) {
-      case 'login':
-        login(formData);
-        break;
-      case 'signup':
-        signup(formData);
+    if (errors.email || errors.password) {
+      if (errors.email) {
+        toast.error(errors.email)
+      } else if (errors.password) {
+        toast.error(errors.password)
+      }
+    } else {
+      try {
+        switch (action) {
+          case 'login':
+            login(formData);
+            break;
+          case 'signup':
+            signup(formData);
+        }
+      } catch (error) {
+        console.error(error.message)
+      }
     }
+
+
   }
 
   return (
