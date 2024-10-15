@@ -1,8 +1,8 @@
 import SubscriptionForm from "./components/SubscriptionForm";
 import QuizBubble from "./components/QuizComponent/QuizBubble";
-import { Divider, Accordion, AccordionItem, Button } from "@nextui-org/react";
+import { Divider } from "@nextui-org/react";
 import Gallery from "./components/Gallery";
-import { WrenchScrewdriverIcon, ArrowDownIcon } from "@heroicons/react/24/outline";
+import { WrenchScrewdriverIcon } from "@heroicons/react/24/outline";
 import QuizCard from "./components/QuizComponent/QuizCard";
 
 

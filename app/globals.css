@@ -17,7 +17,7 @@
 @layer base {
   html, body {
     @apply h-fit min-h-screen w-full;
-    @apply bg-red-50
+    @apply bg-blue-50
   }
 }
 @layer utilities {
