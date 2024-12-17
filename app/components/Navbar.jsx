@@ -10,7 +10,7 @@ export default function NavbarComponent() {
       <Link href="/">
         <Image src={Logo} alt="hometribe logo" width={130} />
       </Link>
-      <Link href={'/login'}><Button size="sm" className="rounded-xl">Login</Button></Link>
+      {/* <Link href={'/login'}><Button size="sm" className="rounded-xl">Login</Button></Link> */}
     </div>
   )
 }
