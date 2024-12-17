@@ -76,7 +76,7 @@ export default function SubscriptionForm({showDescription, description}) {
       placeholder="youremail@something.com"
       description={inputDescription}
       classNames={{
-        description: "text-black",
+        description: "text-black ",
         inputWrapper: "border border-red-200 bg-white rounded-md w-full",
       }}
       value={email}

@@ -1,5 +1,6 @@
 import { Input } from '@nextui-org/react'
 import { SubmitButton } from './components/Buttons'
+import OneTapComponent from './components/OneTapComponent'
 
 export default function LoginPage() {
   
@@ -17,6 +18,7 @@ export default function LoginPage() {
         <SubmitButton label='Signup' action='signup' variant='bordered' />
         <SubmitButton label='Login' action='login' />
       </div>
+      <OneTapComponent />
     </form>
   )
 }

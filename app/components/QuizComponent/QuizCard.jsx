@@ -7,16 +7,11 @@ export default function QuizCard({}) {
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
   
   return (
-    <Card className="bg-red-200 self-center rounded-lg">
-      <CardBody className="">
-        <div className="gap-1 flex flex-col mx-4">
-          <h2 className="text-lg text-center font-semibold text-black">Try out our quiz and find out what kind of homeschooler you are!</h2>
-          <Button onPress={onOpen} className="bg-black text-white mt-4 mb-2 flex w-1/3 self-center rounded-md">
-            <ArrowRightIcon className="size-6" />
-          </Button>
-          <QuizModal isOpen={isOpen} onOpenChange={onOpenChange}/>
-        </div>
-      </CardBody>
-    </Card>
+    <div>
+      <Button onPress={onOpen} className="bg-red-600 text-white text-lg mt-4 mb-2 flex w-full h-20 self-center rounded-md animate-bounce">
+        Try our quiz to find out if homeschooling is for you!<ArrowRightIcon className="size-6" />
+      </Button>
+      <QuizModal isOpen={isOpen} onOpenChange={onOpenChange}/>
+    </div>
   )
 }
