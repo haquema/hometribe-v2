@@ -7,7 +7,7 @@ export default function QuizCard({}) {
   const {isOpen, onOpen, onOpenChange} = useDisclosure();
   
   return (
-    <Card className="bg-red-200 self-center rounded-lg">
+    <Card className="bg-blue-200 self-center rounded-lg">
       <CardBody className="">
         <div className="gap-1 flex flex-col mx-4">
           <h2 className="text-lg text-center font-semibold text-black">Try out our quiz and find out what kind of homeschooler you are!</h2>
