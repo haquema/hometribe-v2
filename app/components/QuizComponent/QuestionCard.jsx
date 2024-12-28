@@ -81,9 +81,13 @@ export default QuestionCard
 
 
 const questions = [
-  'I like that homeschooling gives me the freedom to set my own schedule for my child\'s learning, without being tied to school hours or rigid routines.',
-  'I like that my child can learn at their own pace and explore subjects that excite them, without the pressure from standardised testing or strict curriculums.',
-  'I like that homeschooling can happen anytime, anywhere - whether at home, during a trip, or while exploring nature.',
-  'I like that homeschooling doesn\’t have to be perfect or formal - it can adapt to what works best for my family.',
-  'I like that I don\’t have to personally teach every subject to my child - there are countless online courses, apps, and resources available, many of them free or low-cost.'
-]
+  "I like the idea that homeschooling gives me the freedom to set my own schedule and adapt learning to suit my family’s/child’s routine.",
+  "I’m excited by the fact that homeschooling can happen anytime, anywhere - whether at home, outdoors, on trips, or through real-life experiences.",
+  "I understand that I don’t have to personally teach every subject - there are countless online courses, apps, and free or low-cost resources that can help.",
+  "I’m open to using tools like educational videos, virtual classes, or community co-ops to support my child’s learning.",
+  "I know that starting homeschooling is much easier than most people think - I don’t even need permission from my local authority (though notifying them is encouraged!).",
+  "I understand that homeschooling doesn’t require a huge time commitment - many families successfully homeschool in just a few hours a day.",
+  "I like that homeschooling allows me to focus on meaningful learning experiences rather than unnecessary assignments or busywork.",
+  "I know homeschooling doesn’t mean isolation - there are many opportunities for social activities like homeschool groups/co-ops, sports, and extracurriculars.",
+  "I’m excited about joining local or online homeschooling communities to find support, advice, and opportunities for my child.",
+];
