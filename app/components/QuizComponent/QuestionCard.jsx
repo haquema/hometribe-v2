@@ -2,6 +2,7 @@ import { useState } from "react";
 import ResultCard from "./ResultCard";
 import { Button, Progress } from "@nextui-org/react";
 import { ChevronLeftIcon } from "@heroicons/react/24/solid";
+import { motion } from "framer-motion";
 
 const QuestionCard = ({ onClose }) => {
   const [pageNo, setPageNo] = useState(0);
@@ -33,57 +34,78 @@ const QuestionCard = ({ onClose }) => {
   // Intro Screen JSX
   if (showIntro) {
     return (
-      <div className="flex flex-col justify-center items-center w-full h-full px-6">
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="flex flex-col justify-center items-center w-full h-full px-6"
+      >
         <h1 className="text-2xl font-bold mb-4 text-left w-full">
           Welcome to the Homeschooling Quiz!
         </h1>
-        <p className="text-lg mb-8 text-left w-full">
+        <p className="text-lg mb-8 text-left w-full leading-relaxed">
           This quiz will help you reflect on whether homeschooling could be the
-          right fit for your family. It’s designed to address common
-          misconceptions and help you explore the flexibility and opportunities
-          that homeschooling can offer.
+          right fit for your family.
         </p>
         <Button
           color="primary"
-          className="w-1/2"
-          onPress={() => setShowIntro(false)} // Transition to quiz
+          size="lg"
+          className="w-1/2 font-semibold shadow-lg hover:scale-105 transition-transform bg-gradient-to-r from-blue-600 to-purple-600"
+          onPress={() => setShowIntro(false)}
         >
           Start Quiz
         </Button>
-      </div>
+      </motion.div>
     );
   }
 
   return (
-    <div className="flex flex-col justify-between items-center w-full gap-6 my-4 px-5 h-full text-black">
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="flex flex-col justify-between items-center w-full gap-6 my-4 px-5 h-full text-black"
+    >
       {!resultPage && (
-        <Progress
-          value={progressValue}
-          color="primary"
-          label={`${pageNo}/${questionCount}`}
-          className="mt-6 w-full"
-          classNames={{
-            labelWrapper: "self-center",
-            label: "font-semibold",
-          }}
-        />
+        <div className="w-full space-y-2">
+          <Progress
+            value={progressValue}
+            color="primary"
+            className="mt-6 w-full"
+            classNames={{
+              indicator: "bg-gradient-to-r from-blue-600 to-purple-600",
+              labelWrapper: "self-center",
+              label: "font-semibold",
+            }}
+          />
+          <p className="text-sm text-gray-600 text-right">
+            Question {pageNo + 1} of {questionCount}
+          </p>
+        </div>
       )}
+
       {!(quizCompleted || resultPage) && (
-        <div className="flex flex-col justify-between items-start h-60">
+        <motion.div 
+          key={pageNo}
+          initial={{ x: 50, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          className="flex flex-col justify-between items-start min-h-[240px] w-full"
+        >
           {pageNo !== 0 && (
             <button
-              className="absolute inset-y-32 left-2 hover:scale-125"
+              className="absolute inset-y-32 -left-2 hover:scale-125 transition-transform p-2"
               onClick={backButton}
             >
               <ChevronLeftIcon className="size-6" />
             </button>
           )}
-          <p className="w-full h-fit mt-4">{questions[pageNo]}</p>
-          <div className="flex gap-6 w-full justify-center mb-6">
+          <div className="space-y-2 w-full">
+            <span className="text-sm font-medium text-gray-500">Question {pageNo + 1}</span>
+            <p className="text-lg leading-relaxed">{questions[pageNo]}</p>
+          </div>
+          <div className="flex gap-6 w-full justify-center mt-8">
             <Button
               radius="sm"
-              color="primary"
-              className="bg-red-500 w-1/2"
+              size="lg"
+              className="w-1/2 bg-red-500 hover:bg-red-600 hover:scale-105 transition-all shadow-md text-white"
               onPress={() => {
                 ButtonHandler();
                 setAnswers([...answers, 0]);
@@ -93,8 +115,8 @@ const QuestionCard = ({ onClose }) => {
             </Button>
             <Button
               radius="sm"
-              color="primary"
-              className="bg-blue-500 w-1/2"
+              size="lg"
+              className="w-1/2 bg-green-500 hover:bg-green-600 hover:scale-105 transition-all shadow-md text-white"
               onPress={() => {
                 ButtonHandler();
                 setAnswers([...answers, 1]);
@@ -103,24 +125,30 @@ const QuestionCard = ({ onClose }) => {
               Agree
             </Button>
           </div>
-        </div>
+        </motion.div>
       )}
+
       {quizCompleted && (
-        <div className="flex flex-col justify-between items-center gap-10 h-60">
-          <p className="mt-4">
-            Thanks for completing the quiz. To see your results, press the
-            button below.
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="flex flex-col justify-between items-center gap-10 min-h-[240px]"
+        >
+          <p className="text-lg text-center mt-4">
+            Thanks for completing the quiz! Ready to see your results?
           </p>
           <Button
-            className="w-full mb-6"
+            size="lg"
+            className="w-full mb-6 shadow-lg hover:scale-105 transition-transform"
             onPress={() => setPageNo(pageNo + 1)}
           >
-            Results
+            Show My Results
           </Button>
-        </div>
+        </motion.div>
       )}
+      
       {resultPage && <ResultCard answers={answers} />}
-    </div>
+    </motion.div>
   );
 };
 

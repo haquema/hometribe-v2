@@ -1,24 +1,24 @@
 'use client'
 import { toast } from "sonner";
 import { Input, Button } from "@nextui-org/react";
-import { EnvelopeIcon } from '@heroicons/react/24/solid'
+import { EnvelopeIcon } from '@heroicons/react/24/outline'
 import { createClient } from "@/utils/supabase/client";
 import { useState } from "react";
-import { emailSchema } from "../validations/emailSchema";
+import * as yup from 'yup'
+
+const emailSchema = yup.object().shape({
+  email: yup.string().email().required(),
+});
 
 export default function SubscriptionForm({showDescription, description}) {
   const [email, setEmail] = useState('')
-
-  // this will determine whether a default or custom description is used
-  let inputDescription;
-  if (showDescription && (description != null) && (description != '')) {
-    inputDescription = description;
-  } else {
-    inputDescription = null;
-  }
+  const [isLoading, setIsLoading] = useState(false)
+  const inputDescription = showDescription ? description : null
 
   async function subscriptionSignup() {
-    const supabase = createClient();
+    setIsLoading(true)
+    const supabase = createClient()
+
     try {
       await emailSchema.validate({ email });
       const { data: emailExists, error: fetchError } = await supabase
@@ -27,68 +27,72 @@ export default function SubscriptionForm({showDescription, description}) {
         .eq('email', email)
         .single();
 
-        // console.log(emailExists);
       if (fetchError) {
-        console.error('Error 1 - checking for email:', fetchError);
+        console.error('Error checking email:', fetchError);
         toast.error('Something went wrong, please try again')
       } else if (emailExists) {
-        switch (emailExists.subscribed) {
-          case true:
-            toast.success('You\'re already on our waitlist!')
-            break;
-          case false:
-            const { error: updateError } = await supabase
-              .from('subscriptions')
-              .update({subscribed: true})
-              .eq('email', email);
+        if (emailExists.subscribed) {
+          toast.success('You\'re already on our waitlist!')
+        } else {
+          const { error: updateError } = await supabase
+            .from('subscriptions')
+            .update({subscribed: true})
+            .eq('email', email);
 
-            if (updateError) {
-              console.error('Error 2 - updating the record:', updateError);
-              toast.error('Something went wrong, please try again')
-            } else {
-              toast.success('You\'re on our waitlist!')
-            }
+          if (updateError) {
+            console.error('Error updating record:', updateError);
+            toast.error('Something went wrong, please try again')
+          } else {
+            toast.success('You\'re on our waitlist!')
+          }
         }
-      } else if (emailExists == null) {
-        const { data: newSubscriber, error: createError } = await supabase
+      } else {
+        const { error: createError } = await supabase
           .from('subscriptions')
           .insert([{ email: email, subscribed: true}]);
 
         if (createError) {
-          console.error('Error 3 - updating the record:', createError);
+          console.error('Error creating record:', createError);
           toast.error('Something went wrong, please try again')
         } else {
-          // console.log(newSubscriber)
           toast.success('You\'ve been added to our waitlist!')
+          setEmail('')
         }
       }
-    } catch (err) {
-      console.error('validation error', err.message);
-      toast.error(err.message)
+    } catch (error) {
+      if (error.name === 'ValidationError') {
+        toast.error('Please enter a valid email address')
+      } else {
+        toast.error('Something went wrong, please try again')
+      }
+    } finally {
+      setIsLoading(false)
     }
   }
-
 
   return (
     <Input
       type="email"
-      label="Email"
-      placeholder="youremail@something.com"
+      placeholder="Your Email"
       description={inputDescription}
       classNames={{
         description: "text-black",
-        inputWrapper: "border border-red-200 bg-white rounded-md w-full",
+        inputWrapper: "border border-blue-200 bg-white rounded-md w-full",
       }}
       value={email}
       onValueChange={setEmail}
       endContent={
-        <Button id="subscribe-button" isIconOnly color="primary" 
-          className="rounded-md bg-red-600 h-full" onPress={subscriptionSignup}
+        <Button 
+          id="subscribe-button" 
+          isIconOnly 
+          color="primary"
+          isLoading={isLoading}
+          className="rounded-md bg-blue-600 h-full -mr-3 hover:bg-blue-700" 
+          onPress={subscriptionSignup}
         >
-          <EnvelopeIcon className="size-5 text-white"/>
+          <EnvelopeIcon className="size-4 text-white"/>
         </Button>
       }
     />
-  
   )
 }

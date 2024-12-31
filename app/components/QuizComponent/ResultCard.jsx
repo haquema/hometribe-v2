@@ -1,4 +1,7 @@
 import SubscriptionForm from "../SubscriptionForm";
+import { Button } from "@nextui-org/react";
+import { ClipboardIcon } from "@heroicons/react/24/outline";
+import { toast } from "sonner";
 
 export default function ResultCard({ answers }) { // Destructure answers
   console.log(answers);
@@ -16,39 +19,88 @@ export default function ResultCard({ answers }) { // Destructure answers
   const score = tallyScore(answers); // Use the destructured answers
   console.log(score);
 
-  let result;
-
+  let achievedResult;
   if (score >= 6) {
-    result = titles[1];
+    achievedResult = 1;
   } else if (score >= 3) {
-    result = titles[2];
+    achievedResult = 2;
   } else {
-    result = titles[3];
+    achievedResult = 3;
   }
 
+  const getShareMessage = () => {
+    const result = titles[achievedResult];
+    return `🏠 I just took the Hometribe quiz and got: ${result.title}!\n\nWondering if homeschooling is right for your family? Take the quiz at: https://hometribe.education`;
+  };
+
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(getShareMessage());
+      toast.success("Copied to clipboard! Share with your friends!");
+    } catch (err) {
+      toast.error("Failed to copy to clipboard");
+    }
+  };
+
   return (
-    <div className="flex flex-col justify-center items-center w-full gap-6 my-4 px-2">
-      <p className="font-semibold text-xl self-center">{result.title}</p>
-      <p className="my-1">{result.description}</p>
-      {/* <SubscriptionForm showDescription={true} description={'Subscribe to our mailing list to receive a copy of your results and keep up to date with our journey!'} /> */}
+    <div className="w-full h-full flex flex-col items-center justify-center px-4 py-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl w-full">
+        {Object.entries(titles)
+          .sort((a, b) => Number(a[0]) - Number(b[0]))
+          .reverse()
+          .map(([key, result]) => (
+          <div
+            key={key}
+            className={`rounded-xl p-8 h-full flex flex-col ${
+              parseInt(key) === achievedResult
+                ? 'bg-gradient-to-br from-blue-50 to-purple-50 border-2 border-blue-500 shadow-lg transform scale-105'
+                : 'bg-white shadow-sm hover:shadow-md transition-shadow'
+            }`}
+          >
+            <div className="flex flex-col items-center mb-6">
+              <span className="text-4xl mb-4">{result.icon}</span>
+              <h3 className={`text-xl font-bold flex flex-col items-center gap-2 text-center ${
+                parseInt(key) === achievedResult ? 'text-blue-700' : 'text-gray-700'
+              }`}>
+                <span>{result.title}</span>
+                {parseInt(key) === achievedResult && (
+                  <span className="text-sm font-medium text-blue-600">
+                    (Your Result!)
+                  </span>
+                )}
+              </h3>
+            </div>
+            <p className="text-gray-600 flex-grow">{result.description}</p>
+            {parseInt(key) === achievedResult && (
+              <Button
+                className="w-full mt-6 bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:opacity-90 transition-opacity"
+                startContent={<ClipboardIcon className="size-4" />}
+                onPress={copyToClipboard}
+              >
+                Share Result
+              </Button>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
 
 const titles = {
-  1: {
-    title: "Homeschool Hero",
-    description:
-      "You’re ready to homeschool! You’ve embraced homeschooling and understand that there are many ways to make it work for your family. Whether it’s a personalised curriculum or using online resources, you’re confident that homeschooling is best for your child. You’ve got this!",
+  3: {
+    title: "Traditional Learning Preference",
+    icon: "🏫",
+    description: `Traditional schooling might be the better fit for your family right now. Every family's educational journey is unique, and choosing what works best for your situation is what matters most.`,
   },
   2: {
     title: "Homeschool Curious",
-    description:
-      "You’re warming up to the idea! You might need a little more information or confidence to take the plunge. Remember, there’s no “perfect” way to homeschool—just find what works for your family. Whether you start small or dive right in, your willingness to explore homeschooling is the first step toward a unique and rewarding educational journey.",
+    icon: "🤔",
+    description: `You're warming up to homeschooling but might need more information to feel confident. Remember, there's no "perfect" way to homeschool—you can start small and find what works best for your family.`,
   },
-  3: {
-    title: "Homeschool Explorer",
-    description:
-      "Homeschooling may not be the right fit for you right now—and that’s completely okay! Every family and child is different, and the most important thing is finding what works best for your situation. Whether you continue with traditional schooling or explore other educational options, your decision will always be about what’s best for your child’s learning and happiness. Keep exploring, and trust that whatever path you choose is the right one for your family!",
+  1: {
+    title: "Homeschool Ready",
+    icon: "🎯",
+    description: `You're ready to embrace homeschooling! You understand the flexibility it offers and feel confident about using various resources and approaches to create a personalized learning experience.`,
   },
 };
