@@ -13,7 +13,7 @@ services:
 
   backend:
     build: ./backend
-    command: npx nodemon src/index.ts
+    command: sh -c "npx prisma generate && npx nodemon src/index.ts"
     volumes:
       - ./backend:/app
     ports:
