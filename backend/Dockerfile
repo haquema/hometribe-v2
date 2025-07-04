@@ -6,7 +6,9 @@ WORKDIR /app
 
 # Install dependencies
 COPY package.json package-lock.json ./
+COPY prisma ./prisma
 RUN npm install
+RUN npx prisma generate
 
 # Copy source code
 COPY . .
@@ -18,4 +20,4 @@ COPY . .
 EXPOSE 3000
 
 # Start the server
-CMD ["npx", "nodemon", "src/index.ts"] 
+CMD ["sh", "-c", "npx prisma generate && npx nodemon src/index.ts"]
