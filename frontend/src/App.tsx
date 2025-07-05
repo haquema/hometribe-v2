@@ -1,8 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function App() {
   const [currentFeature, setCurrentFeature] = useState(0);
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
+  const [isPaused, setIsPaused] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
 
   const features = [
     {
@@ -44,16 +47,48 @@ function App() {
   ];
 
   const nextFeature = () => {
-    setCurrentFeature((prev) => (prev + 1) % features.length);
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setCurrentFeature((prev) => (prev + 1) % features.length);
+      setIsTransitioning(false);
+    }, 250);
+    setIsPaused(true);
+    setTimeout(() => setIsPaused(false), 3000);
   };
 
   const prevFeature = () => {
-    setCurrentFeature((prev) => (prev - 1 + features.length) % features.length);
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setCurrentFeature((prev) => (prev - 1 + features.length) % features.length);
+      setIsTransitioning(false);
+    }, 250);
+    setIsPaused(true);
+    setTimeout(() => setIsPaused(false), 3000);
   };
 
   const goToFeature = (index: number) => {
-    setCurrentFeature(index);
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setCurrentFeature(index);
+      setIsTransitioning(false);
+    }, 250);
+    setIsPaused(true);
+    setTimeout(() => setIsPaused(false), 3000);
   };
+
+  useEffect(() => {
+    if (isPaused) return;
+    
+    const interval = setInterval(() => {
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setCurrentFeature((prev) => (prev + 1) % features.length);
+        setIsTransitioning(false);
+      }, 250);
+    }, 3500);
+
+    return () => clearInterval(interval);
+  }, [features.length, isPaused]);
 
   const toggleFAQ = (index: number) => {
     setOpenFAQ(openFAQ === index ? null : index);
@@ -104,7 +139,11 @@ function App() {
           </div>
           
           {/* Feature Carousel */}
-          <div className="bg-white rounded-lg p-8 shadow-sm">
+          <div 
+            className="bg-white rounded-lg p-8 shadow-sm"
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+          >
             <div className="flex items-center justify-between mb-8">
               <button
                 onClick={prevFeature}
@@ -141,20 +180,26 @@ function App() {
             </div>
             
             <div className="text-center">
-              <div className={`w-16 h-16 mx-auto mb-6 rounded-lg flex items-center justify-center bg-${features[currentFeature].color}-100`}>
-                {features[currentFeature].icon}
-              </div>
-              
-              <h3 className="text-2xl font-semibold text-gray-900 mb-4">
-                {features[currentFeature].title}
-              </h3>
-              
-              <p className="text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
-                {features[currentFeature].description}
-              </p>
-              
-              <div className="bg-gray-100 rounded-lg h-48 flex items-center justify-center text-gray-500">
-                [{features[currentFeature].mockup}]
+              <div 
+                className={`transition-all duration-500 ease-in-out ${
+                  isTransitioning ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
+                }`}
+              >
+                <div className={`w-16 h-16 mx-auto mb-6 rounded-lg flex items-center justify-center bg-${features[currentFeature].color}-100`}>
+                  {features[currentFeature].icon}
+                </div>
+                
+                <h3 className="text-2xl font-semibold text-gray-900 mb-4">
+                  {features[currentFeature].title}
+                </h3>
+                
+                <p className="text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
+                  {features[currentFeature].description}
+                </p>
+                
+                <div className="bg-gray-100 rounded-lg h-48 flex items-center justify-center text-gray-500">
+                  [{features[currentFeature].mockup}]
+                </div>
               </div>
             </div>
           </div>
@@ -358,13 +403,7 @@ function App() {
             </div>
           </div>
 
-          {/* CTA after FAQ */}
-          <div className="text-center mt-12">
-            <p className="text-gray-600 mb-4">Still have questions?</p>
-            <button className="bg-blue-600 text-white px-8 py-3 rounded-md hover:bg-blue-700 font-semibold">
-              Contact Support
-            </button>
-          </div>
+          
         </div>
       </section>
 
