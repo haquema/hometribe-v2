@@ -113,10 +113,10 @@ function App() {
       <section className="px-6 py-20">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-            The homeschooling platform that works for your family.
+            Homeschooling made simple.
           </h1>
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            One place where families plan lessons, track progress, and build a community of learners.
+            The all-in-one place to plan lessons, track progress, and build a community of learners. We've got all the tools to make your homeschooling a success!
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button className="bg-blue-600 text-white px-8 py-3 rounded-md hover:bg-blue-700 font-semibold">
@@ -129,14 +129,14 @@ function App() {
       {/* Interactive Features Section */}
       <section className="px-6 py-20 bg-gray-50">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-16">
+          {/* <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Everything you need for successful homeschooling
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               From lesson planning to progress tracking, HomeTribe has all the tools your family needs.
             </p>
-          </div>
+          </div> */}
           
           {/* Feature Carousel */}
           <div 
