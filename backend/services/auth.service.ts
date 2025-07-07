@@ -2,6 +2,9 @@ import { userRegistrationSchema, userRegistrationInput } from "../validation/use
 import prisma from "../utils/prisma";
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
+import { Resend } from "resend";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 
 export class AuthService {
@@ -32,7 +35,7 @@ export class AuthService {
           role: userInput.role,
         }
       })
-      console.log(`Verify at: http://yourdomain.com/verify?token=${emailVerif.raw}&email=${userInput.email}`);
+      await this.sendVerificationEmail(userInput.email, emailVerif.raw, userInput.name);
       return { success: true, message: "Registration successful. Please check your email to verify your account." };
     } catch (err) {
       return { success: false, errors: [{ message: "Registration failed", details: err }] };
@@ -55,7 +58,26 @@ export class AuthService {
     }
   }
 
-  async sendVerificationEmail() {
-
+  async sendVerificationEmail(email: string, token: string, name: string) {
+    try {
+      const verificationUrl = `http://localhost:3000/verify?token=${token}&email=${email}`;
+      
+      await resend.emails.send({
+        from: 'onboarding@resend.dev', // You'll need to verify this domain
+        to: email,
+        subject: 'Verify your HomeTribe account',
+        html: `
+          <h1>Welcome to HomeTribe!</h1>
+          <p>Hi ${name},</p>
+          <p>Please click the link below to verify your account:</p>
+          <a href="${verificationUrl}">Verify Account</a>
+          <p>This link will expire in 24 hours.</p>
+        `
+      });
+      
+      return { success: true, message: 'Verification email sent' };
+    } catch (error) {
+      return { success: false, errors: [{ message: 'Failed to send verification email' }] };
+    }
   }
 } 
