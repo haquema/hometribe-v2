@@ -18,38 +18,41 @@ export class AuthService {
       // return { success: true, message: "If this email is not registered, you will receive a verification email." };
       return { success: false, errors: [{ message: "Email already registered" }] };
     }
-
-    const hashedUserPassword = await bcrypt.hash(userInput.password, 10);
-    const rawToken = crypto.randomBytes(32).toString('hex');
-    const hashedToken = crypto.createHash('sha256').update(rawToken).digest('hex');
-    const emailVerificationTokenExpires = new Date(Date.now() + 1000 * 60 * 60 * 24);
     
+    const hashedPassword = await this.hashPassword(userInput.password)
+    const emailVerif = await this.generateVerificationToken();
     try {
       const createUser = await prisma.user.create({
         data: {
           email: userInput.email,
-          hashedPassword: hashedUserPassword,
+          hashedPassword: hashedPassword,
           name: userInput.name,
-          emailVerificationToken: hashedToken,
-          emailVerificationExpiresAt: emailVerificationTokenExpires,
+          emailVerificationToken: emailVerif.hashed,
+          emailVerificationExpiresAt: emailVerif.expiry,
           role: userInput.role,
         }
       })
+      console.log(`Verify at: http://yourdomain.com/verify?token=${emailVerif.raw}&email=${userInput.email}`);
       return { success: true, message: "Registration successful. Please check your email to verify your account." };
     } catch (err) {
-      return {err}
+      return { success: false, errors: [{ message: "Registration failed", details: err }] };
     }
-    
-
-    console.log(`Verify at: http://yourdomain.com/verify?token=${rawToken}&email=${userInput.email}`);
   }
 
-  private async hashPassword() {
-
+  private async hashPassword(unhashedPassword: string): Promise<string>  {
+    const hashedUserPassword = await bcrypt.hash(unhashedPassword, 10);
+    return hashedUserPassword;
   }
 
-  private generateVerificationToken() {
-
+  private generateVerificationToken(): { raw: string; hashed: string; expiry: Date } {
+    const rawToken = crypto.randomBytes(32).toString('hex');
+    const hashedToken = crypto.createHash('sha256').update(rawToken).digest('hex');
+    const emailVerificationTokenExpires = new Date(Date.now() + 1000 * 60 * 60 * 24);
+    return {
+      raw: rawToken, 
+      hashed: hashedToken,
+      expiry: emailVerificationTokenExpires
+    }
   }
 
   async sendVerificationEmail() {
