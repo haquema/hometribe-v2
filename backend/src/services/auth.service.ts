@@ -60,7 +60,7 @@ export class AuthService {
 
   async sendVerificationEmail(email: string, token: string, name: string) {
     try {
-      const verificationUrl = `http://localhost:3000/verify?token=${token}&email=${email}`;
+      const verificationUrl = `http://localhost:3000/api/auth/verify?token=${token}&email=${email}`;
       
       await resend.emails.send({
         from: 'onboarding@resend.dev', // You'll need to verify this domain

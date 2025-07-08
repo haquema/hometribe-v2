@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import { AuthService } from '../services/auth.service';
+import crypto from 'crypto';
+import prisma from '../../utils/prisma';
 
 export class AuthController {
   private authService: AuthService;
@@ -23,5 +25,38 @@ export class AuthController {
         errors: [{ message: 'Internal server error' }] 
       });
     }
+  }
+
+  async verifyEmail(req: Request, res: Response) {
+    const { token, email } = req.query; // or req.body if POST
+  
+    if (!token || !email) {
+      return res.status(400).json({ success: false, errors: [{ message: "Missing token or email" }] });
+    }
+  
+    const hashedToken = crypto.createHash('sha256').update(token as string).digest('hex');
+  
+    const user = await prisma.user.findFirst({
+      where: {
+        email: email as string,
+        emailVerificationToken: hashedToken,
+        emailVerificationExpiresAt: { gt: new Date() },
+      }
+    });
+  
+    if (!user) {
+      return res.status(400).json({ success: false, errors: [{ message: "Invalid or expired token" }] });
+    }
+  
+    await prisma.user.update({
+      where: { email: email as string },
+      data: {
+        isEmailVerified: true,
+        emailVerificationToken: null,
+        emailVerificationExpiresAt: null,
+      }
+    });
+
+    return res.redirect('http://localhost:3000/welcome');
   }
 }

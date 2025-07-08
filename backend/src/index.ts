@@ -9,6 +9,9 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use('/api/auth', authRoutes);
 
+app.get('/welcome', (req, res) => {
+  res.send("You're verified! Please proceed to login");
+})
 app.get('/', (req, res) => {
   res.send('Hello from the backend!');
 });
