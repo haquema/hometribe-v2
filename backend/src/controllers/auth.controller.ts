@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { AuthService } from '../services/auth.service';
 import crypto from 'crypto';
 import prisma from '../../utils/prisma';
+import { loginSchema, registrationSchema } from '../../validation/user.validation';
 
 export class AuthController {
   private authService: AuthService;
@@ -11,8 +12,12 @@ export class AuthController {
   }
 
   async register(req: Request, res: Response) {
+    const parseResult = registrationSchema.safeParse(req.body);
+    if (!parseResult.success) {
+      return res.status(400).json({ success: false, errors: parseResult.error.issues });
+    }
     try {
-      const result = await this.authService.registerUser(req.body);
+      const result = await this.authService.registerUser(parseResult.data);
       
       if (result.success) {
         return res.status(201).json(result);
@@ -58,5 +63,22 @@ export class AuthController {
     });
 
     return res.redirect('http://localhost:3000/welcome');
+  }
+
+  async login(req: Request, res: Response) {
+    const parseResult = loginSchema.safeParse(req.body);
+    if (!parseResult.success) {
+      return res.status(400).json({ success: false, errors: parseResult.error.issues });
+    }
+    try {
+      const result = await this.authService.loginUser(parseResult.data);
+      if (result.success) {
+        return res.status(200).json(result);
+      } else {
+        return res.status(400).json(result);
+      }
+    } catch (error) {
+      return res.status(500).json({ success: false, errors: [{ message: 'Internal server error' }] });
+    }
   }
 }

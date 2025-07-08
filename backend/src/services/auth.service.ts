@@ -1,8 +1,12 @@
-import { userRegistrationSchema, userRegistrationInput } from "../../validation/user.validation";
+import { 
+  RegistrationInput, registrationSchema,
+  LoginInput, loginSchema
+ } from "../../validation/user.validation";
 import prisma from "../../utils/prisma";
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import { Resend } from "resend";
+import jwt from 'jsonwebtoken';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -10,8 +14,8 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export class AuthService {
   constructor() {}
 
-  async registerUser(userInput: userRegistrationInput) {
-    const result = await userRegistrationSchema.safeParse(userInput);
+  async registerUser(userInput: RegistrationInput) {
+    const result = await registrationSchema.safeParse(userInput);
     if (!result.success) {
       return { success: false, errors: result.error.issues };
     }
@@ -79,5 +83,41 @@ export class AuthService {
     } catch (error) {
       return { success: false, errors: [{ message: 'Failed to send verification email' }] };
     }
+  }
+
+  async loginUser(loginInput: LoginInput) {
+    // Validate input (already done in controller, but double-check for safety)
+    const result = loginSchema.safeParse(loginInput);
+    if (!result.success) {
+      return { success: false, errors: result.error.issues };
+    }
+    const user = await prisma.user.findUnique({ where: { email: loginInput.email } });
+    if (!user) {
+      return { success: false, errors: [{ message: 'Invalid email or password' }] };
+    }
+    if (!user.isEmailVerified) {
+      return { success: false, errors: [{ message: 'Email not verified' }] };
+    }
+    const passwordMatch = await bcrypt.compare(loginInput.password, user.hashedPassword);
+    if (!passwordMatch) {
+      return { success: false, errors: [{ message: 'Invalid email or password' }] };
+    }
+    // Generate JWT
+    const token = jwt.sign(
+      { userId: user.id, role: user.role },
+      process.env.JWT_SECRET || 'changeme',
+      { expiresIn: '7d' }
+    );
+    return {
+      success: true,
+      message: 'Login successful',
+      token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      }
+    };
   }
 } 

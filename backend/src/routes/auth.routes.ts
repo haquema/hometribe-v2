@@ -13,4 +13,8 @@ router.get('/verify', async (req, res) => {
   await authController.verifyEmail(req, res);
 });
 
+router.post('/login', async (req, res) => {
+  await authController.login(req, res);
+});
+
 export default router;
