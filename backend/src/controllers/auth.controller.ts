@@ -3,6 +3,7 @@ import { AuthService } from '../services/auth.service';
 import crypto from 'crypto';
 import prisma from '../../utils/prisma';
 import { loginSchema, registrationSchema } from '../../validation/user.validation';
+import { AuthRequest } from '../middleware/auth.middleware';
 
 export class AuthController {
   private authService: AuthService;
@@ -80,5 +81,13 @@ export class AuthController {
     } catch (error) {
       return res.status(500).json({ success: false, errors: [{ message: 'Internal server error' }] });
     }
+  }
+
+  async getUser(req: AuthRequest, res: Response) {
+    const userId = req.user?.id;
+    if (!userId) return res.status(401).json({ success: false, message: 'Unauthorized' });
+    const user = await this.authService.getUserById(userId);
+    if (!user) return res.status(404).json({ success: false, message: 'User not found' });
+    return res.status(200).json({ success: true, user });
   }
 }
