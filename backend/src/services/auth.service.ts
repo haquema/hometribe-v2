@@ -1,5 +1,5 @@
-import { userRegistrationSchema, userRegistrationInput } from "../validation/user.validation";
-import prisma from "../utils/prisma";
+import { userRegistrationSchema, userRegistrationInput } from "../../validation/user.validation";
+import prisma from "../../utils/prisma";
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 import { Resend } from "resend";

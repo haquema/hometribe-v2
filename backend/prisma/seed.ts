@@ -10,19 +10,19 @@ async function main() {
     data: [
       {
         email: 'user@example.com',
-        password: hashedPassword,
+        hashedPassword: hashedPassword,
         name: 'Test User',
         role: UserRole.USER,
       },
       {
         email: 'vendor@example.com',
-        password: hashedPassword,
+        hashedPassword: hashedPassword,
         name: 'Test Vendor',
         role: UserRole.VENDOR,
       },
       {
         email: 'admin@example.com',
-        password: hashedPassword,
+        hashedPassword: hashedPassword,
         name: 'Test Admin',
         role: UserRole.ADMIN,
       },
