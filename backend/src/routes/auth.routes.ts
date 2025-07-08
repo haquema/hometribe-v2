@@ -18,8 +18,4 @@ router.post('/login', async (req, res) => {
   await authController.login(req, res);
 });
 
-router.get('/me', authenticateJWT, async (req, res) => {
-  await authController.getUser(req, res);
-});
-
 export default router;

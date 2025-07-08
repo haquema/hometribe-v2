@@ -63,7 +63,7 @@ export class AuthController {
       }
     });
 
-    return res.redirect('http://localhost:3000/welcome');
+    return res.redirect('http://localhost:3000/profile');
   }
 
   async login(req: Request, res: Response) {
