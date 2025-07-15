@@ -96,19 +96,6 @@ function HomePage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Navigation */}
-      <nav className="px-6 py-4 border-b border-gray-100">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <img src="/logo.png" alt="HomeTribe" className="h-8" />
-          <div className="flex items-center space-x-4">
-            <button className="text-gray-600 hover:text-gray-900">Sign up</button>
-            <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
-              Log in
-            </button>
-          </div>
-        </div>
-      </nav>
-
       {/* Hero Section */}
       <section className="px-6 py-20">
         <div className="max-w-4xl mx-auto text-center">
