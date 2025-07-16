@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const ProfilePage: React.FC = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    // Log all query params as an object
+    const queryParams = Object.fromEntries(params.entries());
+    console.log('Query params:', queryParams);
+  }, [location.search]);
   // const { token, user, logout } = useAuth();
   // const [loading, setLoading] = useState(true);
   // const [profile, setProfile] = useState(user);

@@ -65,7 +65,7 @@ export class AuthController {
       }
     });
 
-    return res.redirect(`${url}/profile`);
+    return res.redirect(`${url}/profile?email=verified`);
   }
 
   async login(req: Request, res: Response) {

@@ -8,7 +8,7 @@ import {
   TextInput,
   PasswordInput,
   Group,
-  Checkbox,
+  // Checkbox,
   Anchor,
   Button  
 } from "@mantine/core";
@@ -16,7 +16,7 @@ import classes from './AuthForm.module.css';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
-export function LoginForm() {
+export default function LoginForm() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
