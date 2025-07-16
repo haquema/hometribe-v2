@@ -2,7 +2,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import '@mantine/core/styles.css';
 import { MantineProvider } from '@mantine/core';
 import HomePage from './components/HomePage';
-import { SignupForm, LoginForm, ResetPasswordForm } from './components/auth/AuthForm';
+import { SignupForm, ResetPasswordForm } from './components/auth/AuthForms';
+import { LoginForm } from './components/auth/LoginForm';
 import ProfilePage from './components/ProfilePage';
 import Layout from './components/Layout';
 

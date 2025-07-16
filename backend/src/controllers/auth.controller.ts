@@ -5,6 +5,8 @@ import prisma from '../../utils/prisma';
 import { loginSchema, registrationSchema } from '../../validation/user.validation';
 import { AuthRequest } from '../middleware/auth.middleware';
 
+const url = process.env.FRONTEND_URL
+
 export class AuthController {
   private authService: AuthService;
 
@@ -63,7 +65,7 @@ export class AuthController {
       }
     });
 
-    return res.redirect('http://localhost:3000/profile');
+    return res.redirect(`${url}/profile`);
   }
 
   async login(req: Request, res: Response) {
@@ -74,7 +76,17 @@ export class AuthController {
     try {
       const result = await this.authService.loginUser(parseResult.data);
       if (result.success) {
-        return res.status(200).json(result);
+        res.cookie('token', result.token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production', // send only over HTTPS in production
+          sameSite: 'lax', // or 'strict' or 'none' (if using cross-site cookies)
+          maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+        })
+        return res.status(200).json({
+          success: true,
+          message: result.message,
+          user: result.user,
+        });
       } else {
         return res.status(400).json(result);
       }
