@@ -14,8 +14,6 @@ import {
 } from "@mantine/core";
 import classes from './AuthForm.module.css';
 
-const apiUrl = import.meta.env.VITE_API_URL;
-
 export default function LoginForm() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
@@ -29,8 +27,7 @@ export default function LoginForm() {
     setError(null);
 
     try {
-      console.log(apiUrl)
-      const response = await fetch(`${apiUrl}/auth/login`, {
+      const response = await fetch(`/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -40,7 +37,8 @@ export default function LoginForm() {
         const data = await response.json();
         setError(data.message || 'Login failed');
       } else {
-        navigate('/profile')
+        console.log('user is logged in successfully')
+        // navigate('/profile')
       }
     } catch (err) {
       setError('Network error');

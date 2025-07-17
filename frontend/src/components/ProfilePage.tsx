@@ -1,58 +1,78 @@
 import React, { useEffect, useState } from 'react';
-import { useAuth } from '../context/AuthContext';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import classes from './UserInfoIcons.module.css';
+import { Avatar, Group, Text } from '@mantine/core';
+import { IconAt } from '@tabler/icons-react';
 
 const ProfilePage: React.FC = () => {
-  const location = useLocation();
+  const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    // Log all query params as an object
-    const queryParams = Object.fromEntries(params.entries());
-    console.log('Query params:', queryParams);
-  }, [location.search]);
-  // const { token, user, logout } = useAuth();
-  // const [loading, setLoading] = useState(true);
-  // const [profile, setProfile] = useState(user);
-  // const [error, setError] = useState<string | null>(null);
-  // const navigate = useNavigate();
+    const fetchProfile = async () => {
+      try {
+        const response = await fetch(`/api/user/profile`, {
+          method: 'GET',
+          credentials: 'include', // send cookies
+        });
+        if (response.status === 401 || response.status === 403) {
+          navigate('/login');
+          return;
+        }
+        const data = await response.json();
+        if (data.success) {
+          setUser(data.user);
+        } else {
+          setError('Could not fetch profile');
+        }
+      } catch (err) {
+        setError('Network error');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProfile();
+  }, [navigate]);
 
-  // useEffect(() => {
-  //   if (!token) {
-  //     navigate('/login');
-  //     return;
-  //   }
-  //   if (!user) {
-  //     // Fetch user profile if not already in context
-  //     fetch('/api/user/profile', {
-  //       headers: { Authorization: `Bearer ${token}` }
-  //     })
-  //       .then(res => res.json())
-  //       .then(data => {
-  //         if (data.success) setProfile(data.user);
-  //         else {
-  //           setError('Could not fetch profile');
-  //           logout();
-  //           navigate('/login');
-  //         }
-  //       })
-  //       .catch(() => {
-  //         setError('Network error');
-  //         logout();
-  //         navigate('/login');
-  //       })
-  //       .finally(() => setLoading(false));
-  //   } else {
-  //     setLoading(false);
-  //   }
-  // }, [token, user, logout, navigate]);
-
-  // if (loading) return <div className="text-center mt-8">Loading...</div>;
-  // if (error) return <div className="text-red-500 text-center mt-8">{error}</div>;
-  // if (!profile) return null;
+  if (loading) return <div className="text-center mt-8">Loading...</div>;
+  if (error) return <div className="text-red-500 text-center mt-8">{error}</div>;
+  if (!user) return null;
 
   return (
-    <h1>Well done on making it here!</h1>
+    // <div style={{ maxWidth: 420, margin: '40px auto' }}>
+    //   <h1>Welcome, {user.name || user.email}!</h1>
+    //   <p>Email: {user.email}</p>
+    //   <p>Role: {user.role}</p>
+    //   {/* Add more profile info here as needed */}
+    // </div>
+    <div>
+    <Group wrap="nowrap">
+      <Avatar
+        src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-2.png"
+        size={94}
+        radius="md"
+      />
+      <div>
+        <Text fz="xs" tt="uppercase" fw={700} c="dimmed">
+          Budding Homeschooler
+        </Text>
+
+        <Text fz="lg" fw={500} className={classes.name}>
+          {user.name}
+        </Text>
+
+        <Group wrap="nowrap" gap={10} mt={3}>
+          <IconAt stroke={1.5} size={16} className={classes.icon} />
+          <Text fz="xs" c="dimmed">
+            {user.email}
+          </Text>
+        </Group>
+      </div>
+    </Group>
+  </div>
   );
 };
 

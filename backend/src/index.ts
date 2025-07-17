@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3000;
 const frontendUrl = process.env.FRONTEND_URL;
 
 app.use(cors({
-  origin: frontendUrl, // allow your frontend origin
+  origin: 'http://localhost:5173',// allow your frontend origin
   credentials: true, // if you need to send cookies/auth headers
 }));
 app.use(cookieParser());

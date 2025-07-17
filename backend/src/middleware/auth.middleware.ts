@@ -6,6 +6,8 @@ export interface AuthRequest extends Request {
 }
 
 export function authenticateJWT(req: AuthRequest, res: Response, next: NextFunction): void {
+  console.log('hello')
+  console.log(req.cookies.token)
   const token = req.cookies.token; // get token from cookie
   if (!token) {
     res.status(401).json({ success: false, message: 'No token provided' });
@@ -18,7 +20,10 @@ export function authenticateJWT(req: AuthRequest, res: Response, next: NextFunct
   }
   jwt.verify(token, secret, (err: jwt.VerifyErrors | null, user: any) => {
     if (err) return res.status(403).json({ success: false, message: 'Invalid token' });
-    req.user = user;
+    req.user = {
+      id: user.userId,
+      role: user.role
+    };
     next();
   });
 }

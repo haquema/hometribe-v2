@@ -12,8 +12,6 @@ import {
 } from '@mantine/core';
 import classes from './AuthForm.module.css';
 
-const apiUrl = import.meta.env.VITE_API_URL;
-
 export default function SignupForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -29,7 +27,7 @@ export default function SignupForm() {
     setError(null);
     setSuccess(null);
     try {
-      const response = await fetch(`${apiUrl}/auth/register`, {
+      const response = await fetch(`/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, name, role }),

@@ -78,8 +78,9 @@ export class AuthController {
       if (result.success) {
         res.cookie('token', result.token, {
           httpOnly: true,
-          secure: process.env.NODE_ENV === 'production', // send only over HTTPS in production
+          secure: false,// process.env.NODE_ENV === 'production', // send only over HTTPS in production
           sameSite: 'lax', // or 'strict' or 'none' (if using cross-site cookies)
+          path: '/',
           maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
         })
         return res.status(200).json({
